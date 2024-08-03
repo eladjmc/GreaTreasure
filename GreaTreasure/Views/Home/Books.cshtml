@@ -1,0 +1,78 @@
+﻿@model IEnumerable<GreaTreasure.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+    var isSpaceError = TempData["NoSpaceError"]?.ToString() == "true";
+    var isTooMuchSpace = TempData["TooMuchSpaceAlert"]?.ToString() == "true";
+}
+
+<h1>
+    @if (Model.Any())
+    {
+        @Model.First().ShelfName
+    }
+    else
+    {
+        @:מדף ריק
+    }
+</h1>
+
+<p>
+    <a asp-action="CreateBook" asp-route-id="@TempData["shelfID"]">הוסף ספר</a>
+</p>
+@if (isSpaceError)
+{
+    <div class="alert alert-danger">
+        <p>אין מספיק מקום לספר במדף!</p>
+    </div>
+}
+@if (isTooMuchSpace)
+{
+    <div class="alert alert-warning">
+        <p>גובה הספר קטן משמעותית מגובה המדף!</p>
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               מספר זיהוי
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Width)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Width)/@Html.DisplayFor(modelitem => item.ShelfWidth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Height)/@Html.DisplayFor(modelitem => item.ShelfHeight)
+                </td>
+
+
+        </tr>
+}
+    </tbody>
+</table>
